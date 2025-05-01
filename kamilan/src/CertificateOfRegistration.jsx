@@ -3,6 +3,8 @@ import React, { useEffect, useState, } from "react";
 import axios from "axios";
 import FreeTuitionImage from "./assets/FREETUITION.png";
 import EaristLogo from "./assets/EaristLogo.png";
+import RegistrarSignature from "./assets/RegistrarSignature.png"; 
+import QRCodeImage from "./assets/QRCode.png"; // Replace with your actual filename
 
 
 const CertificateOfRegistration = () => {
@@ -10,7 +12,7 @@ const CertificateOfRegistration = () => {
   const [loading, setLoading] = useState(true); // To track loading state
   const [error, setError] = useState(null); // To handle errors
   const [uploadedImage, setUploadedImage] = useState(null);
-  const [uploadedSignature, setUploadedSignature] = useState(null);
+  // const [uploadedSignature, setUploadedSignature] = useState(null);
   const [currentDate, setCurrentDate] = useState("");
   
 // Helper function to safely extract data from arrays or strings
@@ -62,17 +64,17 @@ const getData = (field, index) => {
     }
   };
 
-  // Handle signature upload
-  const handleSignatureUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setUploadedSignature(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // // Handle signature upload
+  // const handleSignatureUpload = (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setUploadedSignature(reader.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
@@ -81,6 +83,20 @@ const getData = (field, index) => {
   const subjectCodes = Array.isArray(data?.subject_code)
   ? data.subject_code
   : (data?.subject_code || "").split(",");
+
+  const formatFacultyName = (fullName) => {
+    if (!fullName || fullName === "N/A") return fullName;
+    
+    const name = fullName.trim();
+    const firstSpaceIndex = name.indexOf(" ");
+    
+    if (firstSpaceIndex === -1) return name; // No space found
+    
+    const surname = name.substring(0, firstSpaceIndex);
+    const firstName = name.substring(firstSpaceIndex + 1);
+    
+    return `${surname}, ${firstName}`;
+  };
 
   const containerStyle = {
     width: "100%",
@@ -1254,10 +1270,9 @@ const getData = (field, index) => {
       >
         <input
           type="text"
-          value={
-            Array.isArray(data?.subject_faculty)
-              ? data.subject_faculty[index] || "N/A"
-              : (data?.subject_faculty || "").split(",")[index] || "N/A"
+          value={Array.isArray(data?.subject_faculty)
+            ? formatFacultyName(data.subject_faculty[index] || "N/A")
+            : formatFacultyName((data?.subject_faculty || "").split(";;")[index] || "N/A")
           }
           style={{
             color: "black",
@@ -2685,7 +2700,7 @@ const getData = (field, index) => {
 
 
                 <td
-                  colSpan={7}
+                  colSpan={6}
                   style={{
 
                     fontSize: "62.5%",
@@ -2709,7 +2724,7 @@ const getData = (field, index) => {
                   />
                 </td>
                 <td
-                  colSpan={13}
+                  colSpan={8}
                   style={{
 
                     fontSize: "55%",
@@ -2724,34 +2739,26 @@ const getData = (field, index) => {
                       width: "100%",
                       height: "3.5rem",
                       display: "flex",
-                      flexDirection: "column",
                       justifyContent: "center",
-                      alignItems: "flex-start",
-                      marginLeft: "10px",
+                      alignItems: "center",
                       overflow: "hidden",
                       position: "relative",
 
                     }}
                   >
                                       
-                    {/* Registrar Signature */}
-                    {data?.registrar_signature ? (
-                    <img
-                      src={`data:image/jpeg;base64,${data.registrar_signature}`}
-                      alt="Registrar Signature"
-                      style={{ 
-                        width: "170px", 
-                        height: "170px",
-                        objectFit: "contain",
-                        display: "block",
-                        maxWidth: "100%",
-                        margin: "auto",
-                        marginRight: "100px", 
-                        
+                  
+                   {/* Static Registrar Signature */}
+                      <img
+                        src={RegistrarSignature}
+                        alt="Registrar Signature"
+                        style={{ 
+                          width: "150px", 
+                          height: "100px",
+                          objectFit: "contain",               
                         }}
-                    />
-                      ) :
-
+                      />:
+{/* 
                     uploadedSignature ? (
                       <img
                         src={uploadedSignature}
@@ -2777,26 +2784,12 @@ const getData = (field, index) => {
                       >
                         Click to upload your Signature
                       </label>
-                    )}
+                    )} */}
                   </div>
 
-{/* Add the Registrar's Name Below the Signature */}
-<div
-  style={{
-    textAlign: "left", // Centers the text
-    marginTop: "10px", // Adds some spacing between the signature and the name
-    fontFamily: "Arial, sans-serif",
-    fontSize: "12px",
-    fontWeight: "bold",
-   
-  }}
->
-  Julie Ann O. Espiritu, JD.
-</div>
 
 
-
-                  {/* Hidden File Input */}
+                  {/* Hidden File Input
                   <input
                     id="signatureUpload"
                     type="file"
@@ -2805,7 +2798,7 @@ const getData = (field, index) => {
                     style={{
                       display: "none",
                     }}
-                  />
+                  /> */}
                 </td>
 
               </tr>
@@ -2897,7 +2890,7 @@ const getData = (field, index) => {
                 >
                   <input
                     type="text"
-                    value={"_______________________________"}
+                    value={"_____________Julie_Ann_O._Espiritu,_JD._____________"}
                     style={{
                       color: "black",
                       textAlign: "center",
@@ -3050,7 +3043,7 @@ const getData = (field, index) => {
                 >
                   <input
                     type="text"
-                    value={"February 24, 2025"}
+                    value={"February 25, 2025"}
                     style={{
                       textDecoration: "underline",
                       color: "black",
@@ -3123,11 +3116,17 @@ const getData = (field, index) => {
 
               <tr>
                 <td style={{ width: "20%", textAlign: "center" }}>
-                  <img src={FreeTuitionImage} alt="EARIST MIS FEE" style={{ marginTop: "10px", width: "200px", height: "150px", marginLeft: "150px" }} />
+                  <img src={FreeTuitionImage} alt="EARIST MIS FEE" style={{  
+                    // marginTop: "10px", 
+                    width: "200px", 
+                    height: "150px", 
+                    marginLeft: "100px" 
+                    }} />
                 </td>
               </tr>
 
               <tr>
+                
                 <td
                   colSpan={40}
                   style={{
@@ -3136,8 +3135,34 @@ const getData = (field, index) => {
                     textAlign: "right",
                     textAlign: "right",
                     verticalAlign: "middle", // Centers vertically
+                    padding: "20px",
+                    position: "relative",
+                    
                   }}
                 >
+                  
+                  <div
+                  style={{
+                    position: "absolute",
+                    bottom: "40px",
+                    right: "0px",
+                    width: "170px",
+                    height: "170px",
+                    zIndex: 1,
+                  }}
+                >
+                  <img
+                    src={QRCodeImage}
+                    alt="QR Code"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain",
+                  
+                    }}
+                  />
+                </div>
+
                   <input
                     type="text"
                     value={currentDate}
@@ -3149,6 +3174,9 @@ const getData = (field, index) => {
                       border: "none",
                       outline: "none",
                       background: "none",
+                      fontFamily: 'Arial, sans-serif',
+                      fontSize: '12px',
+                      fontWeight: "bold",
                     }}
                   />
                 </td>

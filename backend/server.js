@@ -42,7 +42,7 @@ app.get("/cor", (req, res) => {
       return {
         ...record,
         student_photo: record.student_photo ? record.student_photo.toString("base64") : null, // Convert binary to Base64
-        registrar_signature: record.registrar_signature ? record.registrar_signature.toString("base64") : null, // Convert binary to Base64
+        // registrar_signature: record.registrar_signature ? record.registrar_signature.toString("base64") : null, // Convert binary to Base64
         subject_code: record.subject_code?.split(",") || [],
         subject_title: record.subject_title?.split(",") || [],
         lec_units: record.lec_units?.split(",") || [],
@@ -76,7 +76,7 @@ app.get("/cor/:registrationNo", (req, res) => {
     const processedResult = {
       ...result[0],
       student_photo: result[0].student_photo ? result[0].student_photo.toString("base64") : null, // Convert binary to Base64
-      registrar_signature: result[0].registrar_signature ? result[0].registrar_signature.toString("base64") : null, // Convert binary to Base64
+      // registrar_signature: result[0].registrar_signature ? result[0].registrar_signature.toString("base64") : null, // Convert binary to Base64
       subject_code: result[0].subject_code?.split(",") || [],
       subject_title: result[0].subject_title?.split(",") || [],
       lec_units: result[0].lec_units?.split(",") || [],
